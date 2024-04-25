@@ -161,12 +161,12 @@ resource "aws_instance" "Debian_Server2" {
 
 //_____________________________________________________________________________________________
 
-output "debian_cliente_instance_public_ip" {
+output "debian_hospedeiro1_instance_public_ip" {
   description = "IP Publico da Instancia EC2 HospedeiroPicPay1"
   value       = aws_instance.Debian_Server.public_ip
 }
 
-output "debian_cliente_instance_public_ip" {
+output "debian_hospedeiro2_instance_public_ip" {
   description = "IP Publico da Instancia EC2 HospedeiroPicPay2"
   value       = aws_instance.Debian_Server2.public_ip
 }

@@ -1,7 +1,7 @@
 cat <<EOF> PicPay/hospedarNGINX.yml
 ---
 - name: Hospedar site com Docker
-  hosts: webservers
+  hosts: hospedeiro1
   become: true
   tasks:
     - name: Parar serviço Apache
@@ -35,7 +35,7 @@ cat <<EOF> PicPay/hospedarNGINX.yml
 
     - name: Executar container Docker para o site na porta 80
       docker_container:
-        name: nginx_site_80
+        name: nginx_site_5001
         image: nginx
         state: started
         restart_policy: always
@@ -46,7 +46,7 @@ cat <<EOF> PicPay/hospedarNGINX.yml
 
     - name: Executar container Docker para o site na porta 81
       docker_container:
-        name: nginx_site_81
+        name: nginx_site_5001
         image: nginx
         state: started
         restart_policy: always

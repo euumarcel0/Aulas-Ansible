@@ -1,7 +1,7 @@
 cat <<EOF> PicPay/hospedarHTTPD.yml
 ---
 - name: Copiar site local e hospedar em Docker com Apache2
-  hosts: webservers
+  hosts: hospedeiro2
   become: yes
   tasks:
     - name: Criar o diretório temporário para o site
