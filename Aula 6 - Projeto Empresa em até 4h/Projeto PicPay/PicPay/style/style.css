@@ -1,0 +1,242 @@
+* {
+    box-sizing: border-box;
+}
+
+h1,h2,h3 {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus {
+    outline: 3px solid rgba(0, 0, 255, .3);
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+img{
+    max-width: 100%;
+}
+
+.container {
+    max-width: 1400px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 800;
+    color: #fff;
+    background-color: #426DFF;
+    border-radius: 15px;
+    transition: background-color .3s ease;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color:blue;
+}
+
+
+/* Header */
+
+.header {
+    height: 90px;
+    background-color: #11C76F;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.nav-list {
+    display: flex;
+    margin: 0 auto;
+}
+
+.nav-item {
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 600;
+}
+
+
+
+.nav-link {
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 600;
+    color: #fff;
+    transition: color .3s linear;
+}
+
+.nav-link:hover{
+    color: blue;
+}
+
+.nav-item:not(:last-child) {
+    margin-right: 60px;
+}
+
+
+.header-btn {
+    padding: 12px 30px;
+
+}
+
+
+/* Descubra */
+
+.section-descubra {
+    background: url(./../img/women1.jpg) right center no-repeat #EFF0E8 ;
+    background-size: 50% auto;
+}
+
+.section-descubra-container {
+
+    padding-top: 140px;
+    padding-bottom: 150px;
+}
+
+.section-descubra-content {
+    max-width: 44%;
+}
+
+.descubra-heading {
+    font-size: 58px;
+    line-height: 70px;
+    font-weight: 900;
+    margin-bottom: 40px;
+}
+
+.descubra-description {
+    font-size: 18px;
+    line-height: 38px;
+    font-weight: 300;
+    margin-bottom: 50px;
+}
+
+.descubra-btn {
+    padding: 14px 40px;
+    border-radius: 14px;
+}
+
+
+/* Dinheiro */
+
+.section-dinheiro {
+    background: url(./../img/women2.jpg) left center no-repeat #fff;
+    background-size: 50% auto;
+}
+
+.section-dinheiro-container {
+    padding-top: 140px;
+    padding-bottom: 210px;
+}
+
+.dinheiro-content {
+    padding-left: 52%;
+}
+
+.dinheiro-heading {
+    font-size: 37px;
+    line-height: 45px;
+    font-weight: 900;
+    color: #11C56E;
+    padding-bottom: 15px;
+}
+
+.dinheiro-description {
+    font-size: 18px;
+    line-height: 38px;
+    margin-bottom: 50px;
+}
+
+.dinheiro-btn {
+    padding: 14px 40px;
+}
+
+
+/* card */
+
+.section-card {
+    background: url(./../img/card.jpg) right center no-repeat #EFF0E8;
+    background-size: 50% auto;
+}
+
+.section-card-container {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.card-content {
+    max-width: 50%;
+}
+
+.card-heading {
+    font-size: 37px;
+    line-height: 45px;
+    font-weight: 900;
+    color: #11C56E;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    font-size: 18px;
+    line-height: 38px;
+    margin-bottom: 50px;
+}
+
+.card-btn {
+    padding: 14px 40px;
+}
+
+
+/* Pague */
+
+.section-pague {
+    background: url(./../img/image\ 6.jpg) left center no-repeat #fff;
+    background-size: 50% auto;
+}
+
+.pague-content {
+    padding-left: 52%;
+}
+
+.section-pague-container {
+    padding-top: 140px;
+    padding-bottom: 170px;
+}
+
+.pague-heading {
+    font-size: 37px;
+    line-height: 45px;
+    font-weight: 900;
+    color: #11C56E;
+    margin-bottom: 10px;
+}
+
+
+.pague-description {
+    font-size: 18px;
+    line-height: 38px;
+    
+}

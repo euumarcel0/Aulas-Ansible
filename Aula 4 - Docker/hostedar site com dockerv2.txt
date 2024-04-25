@@ -1,0 +1,36 @@
+---
+- name: Copiar site local e hospedar em Docker com Apache2
+  hosts: docker
+  become: yes
+  tasks:
+    - name: Criar o diretório temporário para o site
+      file:
+        path: /tmp/sitebike
+        state: directory
+
+    - name: Clonar repositório do site
+      git:
+        repo: https://github.com/FofuxoSibov/sitebike.git
+        dest: /tmp/sitebike
+        clone: yes
+
+    - name: Criar o Dockerfile no diretório temporário
+      copy:
+        content: |
+          FROM httpd:latest
+          COPY . /usr/local/apache2/htdocs/
+          EXPOSE 80
+        dest: /tmp/sitebike/Dockerfile
+
+    - name: Construir a imagem do Docker
+      docker_image:
+        path: /tmp/sitebike
+        name: meu-apache2
+        source: build
+
+    - name: Executar o contêiner Docker
+      docker_container:
+        name: meu-apache2-container
+        image: meu-apache2
+        ports:
+          - "80:80"

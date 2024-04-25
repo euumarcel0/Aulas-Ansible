@@ -1,0 +1,29 @@
+---
+- name: Configuração do Firewall com iptables
+  hosts: srvweb2
+  become: yes
+
+  tasks:
+    - name: limpar as regras antigas
+      iptables:
+       chain: "{{ item }}"
+       flush: yes
+      with_items:
+        - INPUT
+        - FORWARD
+
+    - name: Permitir conexões SSH
+      iptables:
+        chain: INPUT
+        protocol: tcp
+        source: 172.16.57.231
+        destination_port: "22"
+        jump: ACCEPT
+
+    - name: Definir políticas padrão como DROP
+      iptables:
+        chain: "{{ item }}"
+        policy: DROP
+      with_items:
+        - INPUT
+        - FORWARD

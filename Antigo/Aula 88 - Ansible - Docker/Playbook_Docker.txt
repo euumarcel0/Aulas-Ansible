@@ -1,0 +1,160 @@
+SERVIDOR DOCKER = 172.16.63.104
+
+=======SERVIDOR DOCKER=======
+=Definir IP=
+nano /etc/network/interfaces
+
+auto ens33
+iface ens33 inet static
+address 172.16.63.164
+netmask 255.255.248.0
+gateway 172.16.63.254
+dns-nameserver 172.16.52.10
+
+
+=Reiniciar interface=
+# service networking restart
+
+
+=Ajustar o SSH=
+nano /etc/ssh/sshd_config
+
+=Procurar a linha 34 By Levi RM=
+(CTRL + - e digitar 34)
+
+=Procurar a palavra Permit By Marcelo RT=
+(CTRL + W e digitar Permit)
+
+==Ajustar linha 34 com o conteudo a seguir:==
+PermitRootLogin yes
+
+=Reiniciar o SSH=
+service ssh restart
+
+
+==SERVIDOR ANSIBLE==
+=CHAVE JÁ EXISTE - PRECISA COPIAR PARA O SERVIDOR DOCKER=
+
+
+=======SERVIDOR ANSIBLE=======
+nano /etc/ansible/hosts
+
+[docker]
+172.16.63.104 ansible_ssh_user=root ansible_ssh_private_key_file=/root/.ssh/id_rsa
+
+
+
+CRIAR PLAYBOOK para o SERVIDOR DOCKER DENTRO DO ANSIBLE COMO ROOT
+
+Para Organizar os nossos Playbooks
+=Criar diretório=
+mkdir docker
+
+=1 ==CRIAR playbook Ajuste do Docker
+
+cat <<EOF> docker/docker_playbook.yml
+---
+- name: Ajustar o Servidor Docker
+  hosts: docker
+  become: yes
+  tasks:
+
+    - name: Ajustar Source.List
+      command: hostnamectl set-hostname docker
+
+    - name: Ajustar Source.List
+      copy:
+        content: "deb http://deb.debian.org/debian bullseye main"
+        dest: /etc/apt/sources.list
+
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar PIP
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Instalar o Docker
+      command: python3 -m pip install docker
+EOF
+
+
+=======SERVIDOR ANSIBLE=======
+nano /etc/ansible/hosts
+
+[docker]
+docker_cli ansible_host=172.16.63.104
+
+[docker:vars]
+ansible_ssh_user=root
+ansible_ssh_private_key_file=/root/.ssh/id_rsa
+ansible_python_interpreter=/usr/bin/python3
+
+
+=Executar o Playbook=
+ansible-playbook docker/docker_playbook.yml
+
+=2 ==Criar Playbook para Instalar o Docker==
+
+cat <<EOF> docker/init-playbook.yaml
+---
+- name: NOME = srvwebdocker
+  hosts: docker_cli
+  become: yes
+  tasks:
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalando GIT
+      apt:
+        name: git
+        state: present
+
+    - name: Instalando DOCKER
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Clonando repositorio GIT
+      shell: git clone https://github.com/FofuxoSibov/sitebike.git
+
+    - name: Alterando o nome do site
+      shell: sed -i 's|Site Bike|srvwebdocker|g' index.html
+      args:
+        chdir: sitebike
+
+    - name: Criando um Dockerfile
+      copy:
+        content: |
+          FROM httpd:latest
+          COPY . /usr/local/apache2/htdocs/
+        dest: ./sitebike/Dockerfile
+EOF
+
+Executar o Playbook=
+ansible-playbook docker/init-playbook.yaml
+
+
+=3 ==Criar Playbook para Baixar e Executar uma imagem no Docker==
+
+cat <<EOF> docker/docker_image-playbook.yaml
+---
+- name: Construindo minha imagem docker
+  hosts: docker_cli
+  become: yes
+  tasks:
+    - name: Construir imagem Docker
+      docker_image:
+        name: imagemweb
+        build:
+          path: sitebike/
+   
+    - name: Iniciar meu container Docker
+      shell: docker run -d -p 80:80 --name web-container imagemweb
+EOF
+
+Executar o Playbook=
+ansible-playbook docker/docker_image-playbook.yaml

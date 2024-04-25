@@ -1,0 +1,57 @@
+cat <<EOF> PicPay/hospedarNGINX.yml
+---
+- name: Hospedar site com Docker
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Parar serviço Apache
+      service:
+        name: apache2
+        state: stopped
+      ignore_errors: yes
+
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar Git e Docker
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - docker.io
+
+    - name: Iniciar serviço Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Clonar repositório do site
+      git:
+        repo: https://github.com/euumarcel0/PicPay.git
+        dest: /root/webhttp/PicPay
+
+    - name: Executar container Docker para o site na porta 80
+      docker_container:
+        name: nginx_site_80
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "5000:80"
+        volumes:
+          - "/root/webhttp/PicPay:/usr/share/nginx/html:ro"
+
+    - name: Executar container Docker para o site na porta 81
+      docker_container:
+        name: nginx_site_81
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "5001:80"
+        volumes:
+          - "/root/webhttp/PicPay:/usr/share/nginx/html:ro"
+EOF

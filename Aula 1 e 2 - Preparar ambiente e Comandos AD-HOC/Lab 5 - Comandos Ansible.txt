@@ -1,0 +1,24 @@
+sudo su - 
+hostnamectl set-hostname srvansible
+bash
+nano /etc/apt/sources.list
+adicionar linha = deb http://deb.debian.org/debian/ bullseye main
+"Ctrl + X" , "Y", "Enter"
+cat /etc/apt/sources.list
+apt update -y 
+apt install python3.9 -y
+python3 --version
+alias python=python3
+apt install python-is-python3
+apt install python3-pip -y
+apt install ansible -y
+ansible --version
+
+APÓS A CONFIGURAÇÃO 
+
+ssh-keygen "3 ENTER"
+chmod 600 .ssh/id_rsa* 
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@ip_maquina_cliente
+"preencha a senha da maquina cliente"
+ssh root@ip_maquina_cliente
+

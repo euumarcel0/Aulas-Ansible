@@ -1,0 +1,21 @@
+Ansible-Server
+
+LinuxSRV-Client
+
+
+
+
+CRIE UMA TERCEIRA MÁQUINA VIRTUAL
+DEBIAN-CLIENT2
+
+Não precisa gerar um nova chave,
+Só precisa copiar para o novo client
+
+hostname srvweb2
+
+
+
+
+
+.\tecrm
+TecRm@134

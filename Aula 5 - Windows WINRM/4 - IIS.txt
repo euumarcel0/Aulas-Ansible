@@ -1,0 +1,34 @@
+cat <<EOF> iis-sitebike-playbook.yaml
+- name: Hospedar site no IIS a partir do Git
+  hosts: windows
+  gather_facts: yes
+
+  tasks:
+    - name: Remover conteúdo da pasta wwwroot
+      win_shell: Remove-Item "C:\inetpub\wwwroot\*" -Recurse -Force
+      ignore_errors: yes
+
+    - name: Clonar repositório Git
+      win_shell: git clone https://github.com/euumarcel0/Bikcraft.git C:\temp\Bikcraft
+      args:
+        creates: C:\temp\Bikcraft
+
+    - name: Instalar IIS
+      win_feature:
+        name: Web-Server
+        state: present
+
+    - name: Copiar arquivos do site para o diretório do ISS
+      win_copy:
+        src: C:\temp\Bikcraft\
+        dest: C:\inetpub\wwwroot\
+        remote_src: yes
+
+    - name: Definir permissões de diretório no IIS
+      win_acl:
+        path: C:\inetpub\wwwroot
+        user: IUSR
+        rights: Read
+        type: allow
+        state: present
+EOF

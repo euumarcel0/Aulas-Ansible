@@ -1,0 +1,15 @@
+---
+- name: Instalar Docker Desktop no Windows Server
+  hosts: windows
+  gather_facts: no
+  vars:
+    docker_installer_url: "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+    docker_installer_path: "C:\\Temp\\DockerDesktopInstaller.exe"
+  tasks:
+    - name: Baixar o instalador do Docker Desktop
+      win_get_url:
+        url: "{{ docker_installer_url }}"
+        dest: "{{ docker_installer_path }}"
+
+    - name: Executar instalador do Docker Desktop
+      win_shell: "{{ docker_installer_path }}"

@@ -1,0 +1,25 @@
+- name: Configurando o site com Nginx
+  hosts: cliente
+  become: yes
+  tasks:
+    - name: Clonar repositório GIT
+      git:
+        repo: https://github.com/FofuxoSibov/sitebike.git
+        dest: /root/sitebike
+        clone: yes
+
+    - name: Mover arquivos do repositório para o diretório do Nginx
+      command: mv /root/sitebike /etc/nginx/sites-available
+
+    - name: Definir propriedades dos arquivos movidos
+      file:
+        path: /etc/nginx/sites-available/
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Habilitar o site no Nginx
+      file:
+        src: /etc/nginx/sites-available/sitebike
+        dest: /etc/nginx/sites-enabled/sitebike
+        state: link

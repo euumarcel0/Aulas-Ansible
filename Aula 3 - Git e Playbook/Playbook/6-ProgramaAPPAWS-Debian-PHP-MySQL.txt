@@ -1,0 +1,46 @@
+---
+- name: Configurar Apache e PHP dentro Debian
+  hosts: cliente3
+  become: yes
+  tasks:
+    - name: Update dos pacotes do apt 
+      apt:
+        update_cache: yes
+
+    - name: Instalação de pacotes
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apache2
+        - php
+        - libapache2-mod-php
+        - unzip
+
+    - name: Download dos arquivos do Lab
+      get_url:
+        url: https://aws-tc-largeobjects.s3.amazonaws.com/AWS-TC-AcademyACF/acf-lab3-vpc/lab-app.zip
+        dest: /tmp/lab-app.zip
+
+    - name: Descompactar os arquivos com Unzip
+      unarchive:
+        src: /tmp/lab-app.zip
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Download e instalação de um SDK da AWS para PHP
+      get_url:
+        url: https://github.com/aws/aws-sdk-php/releases/download/3.62.3/aws.zip
+        dest: /tmp/aws.zip
+
+    - name: Descompactar os arquivos de SDK da AWS com Unzip
+      unarchive:
+        src: /tmp/aws.zip
+        dest: /var/www/html/
+        remote_src: yes
+
+    - name: Inicia o serviço do Apache 
+      systemd:
+        name: apache2
+        enabled: yes
+        state: started

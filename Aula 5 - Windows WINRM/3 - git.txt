@@ -1,0 +1,10 @@
+cat <<EOF> windows/git-playbook.yaml
+- name: Instalar o GIT no Windows
+  hosts: windows
+  gather_facts: yes
+  tasks:
+    - name: Install git
+      win_chocolatey:
+        name: git
+        state: present
+EOF

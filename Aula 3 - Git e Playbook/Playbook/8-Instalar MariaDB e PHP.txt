@@ -1,0 +1,23 @@
+---
+- name: Instalar MariaDB e PHP na VM
+  hosts: cliente1
+  become: yes
+  tasks:
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar MariaDB
+      apt:
+        name: mariadb-server-core
+        state: present
+
+    - name: Instalar PHP
+      apt:
+        name: php
+        state: present
+
+    - name: Instalar MariaDB client
+      apt:
+        name: mariadb-client
+        state: present

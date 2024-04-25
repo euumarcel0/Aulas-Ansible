@@ -1,0 +1,10 @@
+sudo su -
+hostnamectl set-hostname cliente1
+echo 'deb http://deb.debian.org/debian/ bullseye main' > /etc/apt/sources.list
+apt update -y 
+nano /etc/ssh/sshd_config
+editar linha 33, trocar por “yes”: PermitRootLogin yes
+editar linha 57, trocar por “yes”: PasswordAuthentication yes
+"Ctrl + X" , "Y", "Enter"
+passwd : "Senha"
+service sshd restart

@@ -1,0 +1,20 @@
+cat <<EOF> srvweb/playbook.yml
+---
+- name: Instalar GIT e Apache na VM
+  hosts: srvwebs
+  become: yes
+  tasks:
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar GIT
+      apt:
+        name: git
+        state: present
+
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+EOF

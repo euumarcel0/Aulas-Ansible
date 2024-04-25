@@ -1,0 +1,12 @@
+cat <<EOF>> chrome-playbook.yaml
+---
+- name: Instalar Google Chrome
+  hosts: windows
+  gather_facts: true
+  tasks:
+    - name: Instalar pacotes
+      win_chocolatey:
+        name: "googlechrome"
+        state: present
+        ignore_checksums: yes
+EOF

@@ -1,0 +1,13 @@
+---
+- name: Configurar Usuários e Senhas
+  hosts: grupo_de_hosts
+  become: yes
+  tasks:
+    - name: Criar usuário e definir senha
+      user:
+        name: "{{ item.name }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        state: present
+      with_items:
+        - { name: "usuario1", password: "senha_usuario1" }
+        - { name: "usuario2", password: "senha_usuario2" }

@@ -1,0 +1,31 @@
+Estamos com o roteador padrão
+
+1 int G/0 IP DHCP
+
+Vamos fixar o IP na Interface G0/0
+
+Add segunda interface G0/1
+fixar o IP 192.168.X.1 netmask 255.255.255.0
+
+Add rota estatica
+
+Conf Banner
+
+Salvar conf
+
+Estamos com o switch padrão
+
+int vlan1 IP DHCP
+
+
+Vamos fixar o IP na Interface vlan1 
+192.168.X.254 netmask 255.255.255.0
+description [texto-da-descrição]
+
+Conf Banner
+
+Trocar hostname 
+switchmesa1
+
+
+Salvar conf

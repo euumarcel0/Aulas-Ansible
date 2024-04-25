@@ -1,0 +1,40 @@
+---
+- name: Copiar site local e hospedar em Docker com Apache2
+  hosts: cliente4
+  become: yes
+  tasks:
+    - name: Instalar pacotes necessários para o Docker
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+
+    - name: Adicionar a chave GPG oficial do Docker
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Adicionar o repositório do Docker ao sistema
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
+        state: present
+
+    - name: Atualizar o cache do apt após adicionar o repositório
+      apt:
+        update_cache: yes
+
+    - name: Instalar Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Instalar Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'

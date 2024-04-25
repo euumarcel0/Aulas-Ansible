@@ -1,0 +1,24 @@
+en
+conf t
+hostname rt1
+ip domain-name senai.local
+int g0/0
+no shut
+ip add dhcp
+exit
+crypto key generate rsa general-key modulus 1024
+username aluno privilege 15 secret Senai@134
+line vty 0 15	
+transport input ssh telnet
+login local
+exit
+ip ssh version 2
+do wr
+
+
+172.16.61.148
+
+ansible rt1 -m ios_command -a "commands='show version'"
+
+[cisco]
+rt1 ansible_host=172.16.61.148 ansible_ssh_user=aluno ansible_ssh_password=Senai@134

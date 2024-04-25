@@ -1,0 +1,5 @@
+Refazer os dois servidores:
+srvweb
+srvweb2
+Manual - Conf o IP
+Fazer as conf AD-HOC

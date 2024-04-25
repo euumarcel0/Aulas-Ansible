@@ -1,0 +1,66 @@
+cat <<EOF> PicPay/hospedarHTTPD.yml
+---
+- name: Copiar site local e hospedar em Docker com Apache2
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Criar o diretório temporário para o site
+      file:
+        path: /tmp/sitebike
+        state: directory
+
+    - name: Iniciar serviço Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Clonar repositório do site
+      git:
+        repo: https://github.com/euumarcel0/PicPay.git
+        dest: /tmp/sitebike
+
+    - name: Criar o Dockerfile no diretório temporário
+      copy:
+        content: |
+          FROM httpd
+          COPY . /usr/local/apache2/htdocs/
+          EXPOSE 80
+        dest: /tmp/sitebike/Dockerfile
+
+    - name: Construir a imagem docker
+      command: docker build -t meu-apache2-image /tmp/sitebike
+      args:
+        chdir: /tmp/sitebike/
+
+    - name: Executar o contêiner Docker na porta 80
+      docker_container:
+        name: meu-apache2-container-80
+        image: meu-apache2-image
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
+
+    - name: Criar o Dockerfile para o segundo contêiner
+      copy:
+        content: |
+          FROM httpd
+          COPY . /usr/local/apache2/htdocs/
+          EXPOSE 80
+        dest: /tmp/sitebike/Dockerfile81
+
+    - name: Construir a imagem docker para o segundo contêiner
+      command: docker build -t meu-apache2-image81 /tmp/sitebike
+      args:
+        chdir: /tmp/sitebike/
+
+    - name: Executar o segundo contêiner Docker na porta 81
+      docker_container:
+        name: meu-apache2-container-81
+        image: meu-apache2-image81
+        state: started
+        restart_policy: always
+        ports:
+          - "80:81"
+EOF

@@ -1,0 +1,44 @@
+---
+- name: Hospedar site com Docker
+  hosts: cliente
+  become: true
+  tasks:
+    - name: Parar serviço Apache
+      service:
+        name: apache2
+        state: stopped
+      ignore_errors: yes
+
+    - name: Atualizar cache do apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar Git e Docker
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - docker.io
+
+    - name: Iniciar serviço Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Clonar repositório do site
+      git:
+        repo: https://github.com/FofuxoSibov/sitebike.git
+        dest: /root/webhttp/sitebike
+
+    - name: Executar container Docker para o site
+      docker_container:
+        name: nginx_site
+        image: nginx
+        state: started
+        restart_policy: always
+        ports:
+          - "80:80"
+        volumes:
+          - "/root/sitebike:/usr/share/nginx/html:ro"

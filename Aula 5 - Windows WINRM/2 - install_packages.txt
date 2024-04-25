@@ -1,0 +1,20 @@
+cat <<EOF> install_packages.yaml
+- name: Instalar Chrome, Python e VSCode
+  hosts: windows
+  gather_facts: yes
+  tasks:
+    - name: Instalar Google Chrome
+      win_chocolatey:
+        name: googlechrome
+        state: present
+
+    - name: Instalar Python
+      win_chocolatey:
+        name: python
+        state: present
+
+    - name: Instalar Visual Studio Code
+      win_chocolatey:
+        name: vscode
+        state: present
+EOF

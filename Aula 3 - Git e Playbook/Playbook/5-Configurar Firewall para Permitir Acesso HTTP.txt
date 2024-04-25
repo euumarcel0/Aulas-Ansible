@@ -1,0 +1,19 @@
+---
+- name: Configurar Firewall para Permitir Acesso HTTP
+  hosts: cliente1
+  become: yes
+  tasks:
+     - name: Atualizar lista de pacotes
+       apt:
+         update_cache: yes
+
+     - name: Instalar UFW
+       apt:
+         name: ufw
+         state: present
+
+     - name: Permitir tráfego HTTP
+       ufw:
+         rule: allow
+         port: '80'
+         proto: tcp

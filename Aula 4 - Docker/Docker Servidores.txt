@@ -1,0 +1,4 @@
+IP Docker-Hospedeiro = 172.18.1.12
+Nome = hospedeiro
+Usuário = root
+Senha = Info@134134
